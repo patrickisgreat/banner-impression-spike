@@ -1,0 +1,105 @@
+<h1>Research</h1>
+
+<h2>Relevant Links:</h2>
+
+<p><strong>Behavioral Data from the API: </strong></p>
+
+<p><a href="%20https://developer.salesforce.com/docs/atlas.en-us.noversion.mc-apis.meta/mc-apis/behavioral_data_integration_best_practices.htm?search_text=tracking"> https://developer.salesforce.com/docs/atlas.en-us.noversion.mc-apis.meta/mc-apis/behavioral<em>data</em>integration<em>best</em>practices.htm?search<em>text=tracking</em></a></p>
+
+<p><strong>Sent Event Details: </strong></p>
+
+<p><a href="https://developer.salesforce.com/docs/atlas.en-us.noversion.mc-apis.meta/mc-apis/retrieve_sentevent_details_for_job.htm?search_text=tracking">https://developer.salesforce.com/docs/atlas.en-us.noversion.mc-apis.meta/mc-apis/retrieve<em>sentevent</em>details<em>for</em>job.htm?search<em>text=tracking</em></a></p>
+
+<p><strong>Open Event Details: </strong></p>
+
+<p><a href="https://developer.salesforce.com/docs/atlas.en-us.noversion.mc-apis.meta/mc-apis/retrieving_open_events_details.htm?search_text=tracking">https://developer.salesforce.com/docs/atlas.en-us.noversion.mc-apis.meta/mc-apis/retrieving<em>open</em>events<em>details.htm?search</em>text=tracking</a></p>
+
+<p><strong>Click Event Details: </strong></p>
+
+<p><a href="https://developer.salesforce.com/docs/atlas.en-us.noversion.mc-apis.meta/mc-apis/retrieving_all_links_for_a_send.htm?search_text=tracking">https://developer.salesforce.com/docs/atlas.en-us.noversion.mc-apis.meta/mc-apis/retrieving<em>all</em>links<em>for</em>a<em>send.htm?search</em>text=tracking</a></p>
+
+<p>what are the fundamental pieces of this feature? What is the data we want and how can we get it with PHP or JavaScript.</p>
+
+<p>We need the following:</p>
+
+<ol>
+	<li>Total number of impressions</li>
+	<li>How many people were sent that specific banner?</li>
+	<li>How many people opened and potentially saw that specific banner?</li>
+	<li>How many people clicked on that email?</li>
+</ol>
+
+<ul>
+	<li>Sent Events
+
+		<pre><code>require(&#39;ET_Client.php&#39;);
+		$myclient = new ET_Client();
+		$sentevent = new ET_SentEvent();
+		$sentevent-&gt;authStub = $myclient;
+		$response = $sentevent-&gt;get();
+		print_r($response);
+		//for filtering by specific send
+		$sentevent-&gt;props = array(&#39;SendID&#39;, &#39;EventDate&#39;);
+		//________________//
+		// for filtering by specific email
+		$sentevent-&gt;filter = array(&#39;Property&#39; =&gt; &#39;SubscriberKey&#39;, &#39;SimpleOperator&#39; =&gt; &#39;equals&#39;, &#39;Value&#39; =&gt; &#39;example@example.com&#39;);
+		</code></pre></li>
+	<li>Open Events
+
+		<pre><code>require(&#39;ET_Client.php&#39;);
+		$myclient = new ET_Client();
+		$openevent = new ET_OpenEvent();
+		$openevent-&gt;authStub = $myclient;
+		$response = $openevent-&gt;get();
+		print_r($response);
+		//for filtering by specific send
+		$openevent-&gt;props = array(&#39;SendID&#39;, &#39;EventDate&#39;);
+		//________________//
+		//for filtering by email address
+		$openevent-&gt;filter = array(&#39;Property&#39; =&gt; &#39;SubscriberKey&#39;, &#39;SimpleOperator&#39; =&gt; &#39;equals&#39;, &#39;Value&#39; =&gt; &#39;example@example.com&#39;);
+		</code></pre></li>
+	<li>Click Events
+
+		<pre><code>require(&#39;ET_Client.php&#39;);
+		$myclient = new ET_Client();
+		$clickevent = new ET_ClickEvent();
+		$clickevent-&gt;authStub = $myclient;
+		$response = $clickevent-&gt;get();
+		print_r($response);
+		//for filtering by Specific Send
+		$clickevent-&gt;props = array(&#39;SendID&#39;, &#39;EventDate&#39;);
+		//________________//
+		//for filtering by email address
+		$clickevent-&gt;filter = array(&#39;Property&#39; =&gt; &#39;SubscriberKey&#39;,&#39;SimpleOperator&#39; =&gt; &#39;equals&#39;,&#39;Value&#39; =&gt; &#39;example@example.com&#39;);
+		</code></pre></li>
+</ul>
+
+<p>TODO: </p>
+
+<ul>
+	<li>Get some idea of the UX. (conversations with Lisa + AJ)
+
+		<ul>
+			<li>Does the user see this per Banner ? If so where ?</li>
+			<li>Can they see a list of all banners data?</li>
+			<li>Do we want pretty graphs?
+
+				<ul>
+					<li>etc. etc…</li>
+				</ul></li>
+		</ul></li>
+	<li>Stub out the Laravel Model to house this data.</li>
+	<li>Alter a test template with the needed alias tags (ask Zach about this)</li>
+	<li>Update LaravelEtApi package with sugar for the above method examples</li>
+	<li>Figure out if an SFMC query exists to associate this click, send, and impression data to banners based on the aliases
+
+		<ul>
+			<li>If the query does not exist write it (again ask Z)</li>
+		</ul></li>
+	<li>Create DE to house queried data that mirrors Laravel model</li>
+	<li>Build Laravel Controller for Impression Tracking</li>
+	<li>Build out Vue Component with dataTable</li>
+	<li>Build out blade including updates to primary / sub navs</li>
+</ul>
+
+
