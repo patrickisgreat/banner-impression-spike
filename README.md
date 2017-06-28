@@ -1,37 +1,75 @@
-## Welcome to GitHub Pages
+# Research
+[https://patrickisgreat.github.io/banner-impression-spike/](https://patrickisgreat.github.io/banner-impression-spike/)
 
-You can use the [editor on GitHub](https://github.com/patrickisgreat/banner-impression-spike/edit/master/README.md) to maintain and preview the content for your website in Markdown files.
+## Relevant Links:
+**Behavioral Data from the API: **
+[ https://developer.salesforce.com/docs/atlas.en-us.noversion.mc-apis.meta/mc-apis/behavioral_data_integration_best_practices.htm?search_text=tracking](%20https://developer.salesforce.com/docs/atlas.en-us.noversion.mc-apis.meta/mc-apis/behavioral_data_integration_best_practices.htm?search_text=tracking)
+**Sent Event Details: **
+[https://developer.salesforce.com/docs/atlas.en-us.noversion.mc-apis.meta/mc-apis/retrieve_sentevent_details_for_job.htm?search_text=tracking](https://developer.salesforce.com/docs/atlas.en-us.noversion.mc-apis.meta/mc-apis/retrieve_sentevent_details_for_job.htm?search_text=tracking)
+**Open Event Details: **
+[https://developer.salesforce.com/docs/atlas.en-us.noversion.mc-apis.meta/mc-apis/retrieving_open_events_details.htm?search_text=tracking](https://developer.salesforce.com/docs/atlas.en-us.noversion.mc-apis.meta/mc-apis/retrieving_open_events_details.htm?search_text=tracking)
+**Click Event Details: **
+[https://developer.salesforce.com/docs/atlas.en-us.noversion.mc-apis.meta/mc-apis/retrieving_all_links_for_a_send.htm?search_text=tracking](https://developer.salesforce.com/docs/atlas.en-us.noversion.mc-apis.meta/mc-apis/retrieving_all_links_for_a_send.htm?search_text=tracking)
 
-Whenever you commit to this repository, GitHub Pages will run [Jekyll](https://jekyllrb.com/) to rebuild the pages in your site, from the content in your Markdown files.
 
-### Markdown
+what are the fundamental pieces of this feature? What is the data we want and how can we get it with PHP or JavaScript.
 
-Markdown is a lightweight and easy-to-use syntax for styling your writing. It includes conventions for
+We need the following:
+1. Total number of impressions
+2. How many people were sent that specific banner?
+3. How many people opened and potentially saw that specific banner?
+4. How many people clicked on that email?
 
-```markdown
-Syntax highlighted code block
 
-# Header 1
-## Header 2
-### Header 3
+- Sent Events
+		require('ET_Client.php');
+		$myclient = new ET_Client();
+		$sentevent = new ET_SentEvent();
+		$sentevent->authStub = $myclient;
+		$response = $sentevent->get();
+		print_r($response);
+		//for filtering by specific send
+		$sentevent->props = array('SendID', 'EventDate');
+		//________________//
+		// for filtering by specific email
+		$sentevent->filter = array('Property' => 'SubscriberKey', 'SimpleOperator' => 'equals', 'Value' => 'example@example.com');
+- Open Events
+		require('ET_Client.php');
+		$myclient = new ET_Client();
+		$openevent = new ET_OpenEvent();
+		$openevent->authStub = $myclient;
+		$response = $openevent->get();
+		print_r($response);
+		//for filtering by specific send
+		$openevent->props = array('SendID', 'EventDate');
+		//________________//
+		//for filtering by email address
+		$openevent->filter = array('Property' => 'SubscriberKey', 'SimpleOperator' => 'equals', 'Value' => 'example@example.com');
+- Click Events
+		require('ET_Client.php');
+		$myclient = new ET_Client();
+		$clickevent = new ET_ClickEvent();
+		$clickevent->authStub = $myclient;
+		$response = $clickevent->get();
+		print_r($response);
+		//for filtering by Specific Send
+		$clickevent->props = array('SendID', 'EventDate');
+		//________________//
+		//for filtering by email address
+		$clickevent->filter = array('Property' => 'SubscriberKey','SimpleOperator' => 'equals','Value' => 'example@example.com');
 
-- Bulleted
-- List
-
-1. Numbered
-2. List
-
-**Bold** and _Italic_ and `Code` text
-
-[Link](url) and ![Image](src)
-```
-
-For more details see [GitHub Flavored Markdown](https://guides.github.com/features/mastering-markdown/).
-
-### Jekyll Themes
-
-Your Pages site will use the layout and styles from the Jekyll theme you have selected in your [repository settings](https://github.com/patrickisgreat/banner-impression-spike/settings). The name of this theme is saved in the Jekyll `_config.yml` configuration file.
-
-### Support or Contact
-
-Having trouble with Pages? Check out our [documentation](https://help.github.com/categories/github-pages-basics/) or [contact support](https://github.com/contact) and we’ll help you sort it out.
+TODO: 
+- Get some idea of the UX. (conversations with Lisa + AJ)
+	- Does the user see this per Banner ? If so where ?
+	- Can they see a list of all banners data?
+	- Do we want pretty graphs?
+		- etc. etc…
+- Stub out the Laravel Model to house this data.
+- Alter a test template with the needed alias tags (ask Zach about this)
+- Update LaravelEtApi package with sugar for the above method examples
+- Figure out if an SFMC query exists to associate this click, send, and impression data to banners based on the aliases
+	- If the query does not exist write it (again ask Z)
+- Create DE to house queried data that mirrors Laravel model
+- Build Laravel Controller for Impression Tracking
+- Build out Vue Component with dataTable
+- Build out blade including updates to primary / sub navs
