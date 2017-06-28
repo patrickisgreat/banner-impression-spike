@@ -23,6 +23,7 @@ We need the following:
 
 * Sent Events
 	```php
+		<?php
 		require('ET_Client.php');
 		$myclient = new ET_Client();
 		$sentevent = new ET_SentEvent();
@@ -37,6 +38,7 @@ We need the following:
 	```
 * Open Events
 	```php
+		<?php
 		require('ET_Client.php');
 		$myclient = new ET_Client();
 		$openevent = new ET_OpenEvent();
@@ -50,6 +52,7 @@ We need the following:
 		$openevent->filter = array('Property' => 'SubscriberKey', 'SimpleOperator' => 'equals', 'Value' => 'example@example.com');
 	```
 * Click Events
+		<?php
 		require('ET_Client.php');
 		$myclient = new ET_Client();
 		$clickevent = new ET_ClickEvent();
