@@ -52,6 +52,7 @@ We need the following:
 		$openevent->filter = array('Property' => 'SubscriberKey', 'SimpleOperator' => 'equals', 'Value' => 'example@example.com');
 	```
 * Click Events
+	```php
 		<?php
 		require('ET_Client.php');
 		$myclient = new ET_Client();
